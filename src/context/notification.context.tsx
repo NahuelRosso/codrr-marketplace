@@ -4,6 +4,7 @@ import { AlertColor } from "@mui/material";
 
 type ContexProps = {
   getError: (message: string) => void;
+  getSuccess: (message: string) => void;
 };
 const NotificationContext = React.createContext<ContexProps | null>(null);
 
@@ -23,7 +24,12 @@ export const NotificationProvider: React.FC<{ children: JSX.Element }> = ({
     setOpen(true);
     setMessage(message);
   };
-  const value = { getError };
+  const getSuccess = (message: string) => {
+    setSeverity("success");
+    setOpen(true);
+    setMessage(message);
+  };
+  const value = { getError, getSuccess };
 
   return (
     <NotificationContext.Provider value={value}>
@@ -38,8 +44,8 @@ export const NotificationProvider: React.FC<{ children: JSX.Element }> = ({
   );
 };
 
-export const useNotification=()=>{
-    const context = React.useContext(NotificationContext)
-    if(!context)throw new Error("No existe contexto")
-    return context;
-}
+export const useNotification = () => {
+  const context = React.useContext(NotificationContext);
+  if (!context) throw new Error("No existe contexto");
+  return context;
+};
